@@ -9,3 +9,8 @@ export function dateDiffInDays(day1: string, day2: string) {
 }
 
 export const today = new Date().toLocaleDateString("en-CA");
+
+export function formatDate(date: Date): string {
+  const dateOptions: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
+  return date.toLocaleDateString(undefined, dateOptions);
+}

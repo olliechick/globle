@@ -1,10 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Stats } from "../lib/localStorage";
-import { isMobile } from "react-device-detect";
+import { isFirefox, isMobile } from "react-device-detect";
 import { getPath } from "../util/svg";
-import { today } from "../util/dates";
-import { isFirefox } from "react-device-detect";
+import { formatDate, today } from "../util/dates";
 import { FormattedMessage } from "react-intl";
 import { LocaleContext } from "../i18n/LocaleContext";
 import localeList from "../i18n/messages";
@@ -21,7 +20,7 @@ export default function Statistics({ setShowStats }: Props) {
   // Stats data
   const firstStats = {
     gamesWon: 0,
-    lastWin: new Date(0).toLocaleDateString("en-CA"),
+    lastWin: formatDate(new Date(0)),
     currentStreak: 0,
     maxStreak: 0,
     usedGuesses: [],
@@ -72,6 +71,7 @@ export default function Statistics({ setShowStats }: Props) {
         setShowStats(false);
       }
     }
+
     document.addEventListener("click", closeModal);
     return () => {
       document.removeEventListener("click", closeModal);
@@ -82,6 +82,7 @@ export default function Statistics({ setShowStats }: Props) {
   const [msg, setMsg] = useState("");
   const [showResetMsg, setShowResetMsg] = useState(false);
   const [resetComplete, setResetComplete] = useState(false);
+
   // const [question, setQuestion] = useState(false);
   function promptReset() {
     setMsg(localeList[locale]["Stats10"]);
@@ -89,6 +90,7 @@ export default function Statistics({ setShowStats }: Props) {
     setResetComplete(false);
     setShowResetMsg(true);
   }
+
   function resetStats() {
     storeStats(firstStats);
     setShowResetMsg(false);
@@ -101,11 +103,11 @@ export default function Statistics({ setShowStats }: Props) {
 
   // Clipboard
   const [showCopyMsg, setShowCopyMsg] = useState(false);
-  const options = { year: "numeric", month: "short", day: "numeric" };
   const event = new Date();
   // @ts-ignore
-  const unambiguousDate = event.toLocaleDateString(locale, options);
+  const unambiguousDate = formatDate(event);
   const date = unambiguousDate === "Invalid Date" ? today : unambiguousDate;
+
   async function copyToClipboard() {
     const shareString = `🌎 ${date} 🌍
 🔥 ${currentStreak} | ${localeList[locale]["Stats7"]}: ${showAvgGuesses}
@@ -169,13 +171,13 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
             return (
               <tr key={idx}>
                 <td
-                  className="pt-4 border-b-2 border-dotted border-slate-700 
+                  className="pt-4 border-b-2 border-dotted border-slate-700
                 text-lg font-medium"
                 >
                   {row.label}
                 </td>
                 <td
-                  className="pt-4 border-b-2 border-dotted border-slate-700 
+                  className="pt-4 border-b-2 border-dotted border-slate-700
                 text-lg font-medium"
                 >
                   {row.value}
@@ -196,7 +198,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
         </button>
         <button
           className="bg-blue-700 hover:bg-blue-900 dark:bg-purple-800 dark:hover:bg-purple-900
-          text-white dark:text-gray-200 rounded-md px-8 py-2 block text-base font-medium 
+          text-white dark:text-gray-200 rounded-md px-8 py-2 block text-base font-medium
           focus:outline-none focus:ring-2 focus:ring-blue-300 
           justify-around sm:flex-grow sm:mx-10"
           onClick={copyToClipboard}
@@ -250,14 +252,14 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
       </div>
       <Fade
         show={showResetMsg}
-        background="border-4 border-sky-300 dark:border-slate-700 bg-sky-100 
+        background="border-4 border-sky-300 dark:border-slate-700 bg-sky-100
         dark:bg-slate-900 drop-shadow-xl 
         absolute z-10 top-24 w-fit inset-x-0 mx-auto py-4 px-4 rounded-md space-y-2"
       >
         <p className="text-gray-900 dark:text-gray-200">{msg}</p>
         <div className="py-4 flex justify-center sm:space-x-8">
           <button
-            className="bg-red-700 text-white rounded-md px-6 py-2 block 
+            className="bg-red-700 text-white rounded-md px-6 py-2 block
             text-base font-medium hover:bg-red-900 disabled:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-300"
             onClick={resetStats}
             disabled={resetComplete}
@@ -265,7 +267,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
             Yes
           </button>
           <button
-            className="bg-blue-700 text-white rounded-md px-6 py-2 block 
+            className="bg-blue-700 text-white rounded-md px-6 py-2 block
             text-base font-medium hover:bg-blue-900 disabled:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             onClick={() => setShowResetMsg(false)}
             disabled={resetComplete}
@@ -276,7 +278,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
       </Fade>
       <Fade
         show={showCopyMsg}
-        background="border-4 border-sky-300 dark:border-slate-700 
+        background="border-4 border-sky-300 dark:border-slate-700
         bg-sky-100 dark:bg-slate-900 drop-shadow-xl 
       absolute z-10 top-24 w-fit inset-x-0 mx-auto py-4 px-4 rounded-md space-y-2"
       >
