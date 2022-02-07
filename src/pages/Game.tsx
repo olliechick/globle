@@ -4,7 +4,7 @@ import { Country } from "../lib/country";
 import { answerCountry, answerName } from "../util/answer";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Guesses, Stats } from "../lib/localStorage";
-import { dateDiffInDays, today } from "../util/dates";
+import { dateDiffInDays, formatDate, today } from "../util/dates";
 import { polygonDistance } from "../util/distance";
 import { getColourEmoji } from "../util/colour";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -30,7 +30,7 @@ export default function Game({ reSpin, setReSpin, setShowStats }: Props) {
 
   const firstStats = {
     gamesWon: 0,
-    lastWin: new Date(0).toLocaleDateString("en-CA"),
+    lastWin: formatDate(new Date(0)),
     currentStreak: 0,
     maxStreak: 0,
     usedGuesses: [],

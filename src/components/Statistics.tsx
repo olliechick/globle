@@ -1,12 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { Stats } from "../lib/localStorage";
-import { isMobile } from "react-device-detect";
-import { getPath } from "../util/svg";
-import { today } from "../util/dates";
-import { isFirefox } from "react-device-detect";
-import { FormattedMessage } from "react-intl";
-import { LocaleContext } from "../i18n/LocaleContext";
+import {useContext, useEffect, useRef, useState} from "react";
+import {useLocalStorage} from "../hooks/useLocalStorage";
+import {Stats} from "../lib/localStorage";
+import {isFirefox, isMobile} from "react-device-detect";
+import {getPath} from "../util/svg";
+import {formatDate, today} from "../util/dates";
+import {FormattedMessage} from "react-intl";
+import {LocaleContext} from "../i18n/LocaleContext";
 import localeList from "../i18n/messages";
 import Fade from "../transitions/Fade";
 
@@ -21,7 +20,7 @@ export default function Statistics({ setShowStats }: Props) {
   // Stats data
   const firstStats = {
     gamesWon: 0,
-    lastWin: new Date(0).toLocaleDateString("en-CA"),
+    lastWin: formatDate(new Date(0)),
     currentStreak: 0,
     maxStreak: 0,
     usedGuesses: [],
@@ -101,10 +100,9 @@ export default function Statistics({ setShowStats }: Props) {
 
   // Clipboard
   const [showCopyMsg, setShowCopyMsg] = useState(false);
-  const options = { year: "numeric", month: "short", day: "numeric" };
   const event = new Date();
   // @ts-ignore
-  const unambiguousDate = event.toLocaleDateString(locale, options);
+  const unambiguousDate = formatDate(event);
   const date = unambiguousDate === "Invalid Date" ? today : unambiguousDate;
   async function copyToClipboard() {
     const shareString = `🌎 ${date} 🌍
@@ -169,13 +167,13 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
             return (
               <tr key={idx}>
                 <td
-                  className="pt-4 border-b-2 border-dotted border-slate-700 
+                  className="pt-4 border-b-2 border-dotted border-slate-700
                 text-lg font-medium"
                 >
                   {row.label}
                 </td>
                 <td
-                  className="pt-4 border-b-2 border-dotted border-slate-700 
+                  className="pt-4 border-b-2 border-dotted border-slate-700
                 text-lg font-medium"
                 >
                   {row.value}
@@ -196,7 +194,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
         </button>
         <button
           className="bg-blue-700 hover:bg-blue-900 dark:bg-purple-800 dark:hover:bg-purple-900
-          text-white dark:text-gray-300 rounded-md px-8 py-2 block text-base font-medium 
+          text-white dark:text-gray-300 rounded-md px-8 py-2 block text-base font-medium
           focus:outline-none focus:ring-2 focus:ring-blue-300 
           justify-around sm:flex-grow sm:mx-10"
           onClick={copyToClipboard}
@@ -257,7 +255,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
         <p className="text-gray-900 dark:text-gray-300">{msg}</p>
         <div className="py-4 flex justify-center sm:space-x-8">
           <button
-            className="bg-red-700 text-white rounded-md px-6 py-2 block 
+            className="bg-red-700 text-white rounded-md px-6 py-2 block
             text-base font-medium hover:bg-red-900 disabled:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-300"
             onClick={resetStats}
             disabled={resetComplete}
@@ -265,7 +263,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
             Yes
           </button>
           <button
-            className="bg-blue-700 text-white rounded-md px-6 py-2 block 
+            className="bg-blue-700 text-white rounded-md px-6 py-2 block
             text-base font-medium hover:bg-blue-900 disabled:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             onClick={() => setShowResetMsg(false)}
             disabled={resetComplete}
