@@ -226,10 +226,10 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
             target="_blank"
           >
             <img
-              src="images/plurality.png"
-              alt="Plurality logo"
-              width={25}
-              height={25}
+                src="./images/plurality.png"
+                alt="Plurality logo"
+                width={25}
+                height={25}
             />
             <span className="ml-1 mr-3">Plurality</span>
             <svg

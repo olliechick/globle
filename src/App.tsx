@@ -45,13 +45,13 @@ function App() {
         <Statistics setShowStats={setShowStats} />
       </Fade>
       <Routes>
-        <Route path="/" element={<Help />} />
+        <Route path="/globle/" element={<Help />} />
         <Route
-          path="/game"
+          path="/globle/game"
           element={<Game reSpin={reSpin} setShowStats={setShowStats} />}
         />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/info" element={<Info />} />
+        <Route path="/globle/settings" element={<Settings />} />
+        <Route path="/globle/info" element={<Info />} />
       </Routes>
       {!practiceMode && (
         <div className="sm:py-4">

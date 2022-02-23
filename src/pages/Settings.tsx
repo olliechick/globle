@@ -40,7 +40,7 @@ export default function Settings() {
     const practiceAnswer =
       countryData[Math.floor(Math.random() * countryData.length)];
     localStorage.setItem("practice", JSON.stringify(practiceAnswer));
-    navigate("/game?practice_mode=true");
+    navigate("/globle/game?practice_mode=true");
   }
 
   const options = [

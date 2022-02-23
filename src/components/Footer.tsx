@@ -53,7 +53,7 @@ export default function Footer() {
             <FormattedMessage id="Aux2" />{" "}
             <button
               className="underline cursor-pointer inline"
-              onClick={() => navigate("/info")}
+              onClick={() => navigate("/globle/info")}
             >
               <FormattedMessage id="Aux3" />
             </button>
