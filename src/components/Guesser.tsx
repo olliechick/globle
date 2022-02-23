@@ -41,19 +41,20 @@ export default function Guesser({
   }, [ref]);
 
   function getSuggestions(value: string) {
-    const inputValue = value.trim().toLowerCase();
+    const inputValue = value.trim();
     const inputLength = inputValue.length;
 
     if (inputLength >= minGuessLength) {
-      let suggestions: Country[] = [];
-      suggestions = countryData.filter(country => {
-        const countryName = country.properties.NAME.toLowerCase();
-        if (countryName !== inputValue) {
-          return countryName.slice(0, inputLength) === inputValue;
-        }
-        return [];
+      const countryNames = countryData.map(country => country.properties.NAME)
+      const suggestions = countryData.filter(country => {
+        const countryName = country.properties.NAME.toLowerCase()
+        return countryName.slice(0, inputLength) === inputValue.toLowerCase()
       });
-      return suggestions.slice(0,suggestionLimit);
+      if (suggestions.length === 1 && countryNames.includes(inputValue)) {
+        return [];
+      } else {
+        return suggestions.slice(0, suggestionLimit);
+      }
     }
     return [];
   }
