@@ -2,6 +2,7 @@
   "name": "globle",
   "version": "1.6.0",
   "private": true,
+  "homepage": "/globle/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
