@@ -34,19 +34,21 @@ export default function Guesser({
   const langName = langNameMap[locale];
 
   function getSuggestions(value: string) {
-    const inputValue = value.trim().toLowerCase();
+    const inputValue = value.trim();
     const inputLength = inputValue.length;
     
     if (inputLength >= minGuessLength) {
-      let suggestions: Country[] = [];
-      suggestions = countryData.filter(country => {
-        const countryName = country.properties.NAME.toLowerCase();
-        if (countryName !== inputValue) {
-          return countryName.slice(0, inputLength) === inputValue;
-        }
-        return [];
+      const countryNames = countryData.map(country => country.properties.NAME)
+      const suggestions = countryData.filter(country => {
+        const countryName = country.properties.NAME.toLowerCase()
+        return countryName.slice(0, inputLength) === inputValue.toLowerCase()
       });
-      return suggestions.slice(0,suggestionLimit);
+      console.log(inputValue, countryNames)
+      if (suggestions.length === 1 && countryNames.includes(inputValue)) {
+        return [];
+      } else {
+        return suggestions.slice(0, suggestionLimit);
+      }
     }
     return [];
   }
@@ -152,9 +154,9 @@ export default function Guesser({
           placeholder={guesses.length === 0 ? localeList[locale]["Game1"] : ""}
           autoComplete="new-password"
         />
-        
+
         <button
-          className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white 
+          className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white
           font-bold py-1 md:py-2 px-4 rounded focus:shadow-outline "
           type="submit"
           disabled={win}
@@ -171,7 +173,7 @@ export default function Guesser({
           {getSuggestions(guessName).map(country => {
             return (
               <div
-              className="text-left" 
+              className="text-left"
               key={country.properties.ADMIN}
               onClick={() => {setGuessName(country.properties.NAME)}}
               >{country.properties.NAME}</div>
