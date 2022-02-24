@@ -4,10 +4,12 @@ import { answerCountry, answerName } from "../util/answer";
 import { Message } from "./Message";
 import { polygonDistance } from "../util/distance";
 import alternateNames from "../data/alternate_names.json";
+import { ThemeContext } from "../context/ThemeContext";
 import { LocaleContext } from "../i18n/LocaleContext";
 import localeList from "../i18n/messages";
 import { FormattedMessage } from "react-intl";
 import { langNameMap } from "../i18n/locales";
+
 const countryData: Country[] = require("../data/country_data.json").features;
 const minGuessLength = 2;
 const suggestionLimit = 3;
@@ -29,11 +31,15 @@ export default function Guesser({
 }: Props) {
   const [guessName, setGuessName] = useState("");
   const [error, setError] = useState("");
+  const { hideAutocomplete } = useContext(ThemeContext).theme;
   const { locale } = useContext(LocaleContext);
 
   const langName = langNameMap[locale];
 
   function getSuggestions(value: string) {
+    if (hideAutocomplete){
+      return [];
+    }
     const inputValue = value.trim();
     const inputLength = inputValue.length;
     

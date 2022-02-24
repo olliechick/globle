@@ -12,6 +12,7 @@ type Theme = {
   nightMode: boolean;
   highContrast: boolean;
   prideMode: boolean;
+  hideAutocomplete: boolean;
 };
 
 type ThemeContextType = {
@@ -23,6 +24,7 @@ const initialTheme: Theme = {
   nightMode: false,
   highContrast: false,
   prideMode: false,
+  hideAutocomplete: false
 };
 
 const initialThemeContext: ThemeContextType = {
