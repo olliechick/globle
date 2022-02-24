@@ -18,6 +18,9 @@ export default function Settings() {
     !themeContext.theme.highContrast
   );
   const { locale } = useContext(LocaleContext);
+  const [toggleHideAutocomplete, setToggleHideAutocomplete] = useState(
+      themeContext.theme.hideAutocomplete
+  );
 
   // eslint-disable-next-line
   const [toggleScope, setToggleScope] = useState(true);
@@ -32,9 +35,10 @@ export default function Settings() {
         nightMode: !toggleTheme,
         highContrast: !toggleHighContrast,
         prideMode: !togglePride,
+        hideAutocomplete: toggleHideAutocomplete
       });
     }
-  }, [toggleTheme, toggleHighContrast, setTheme, togglePride]);
+  }, [toggleTheme, toggleHighContrast, setTheme, togglePride, toggleHideAutocomplete]);
 
   function enterPracticeMode() {
     const practiceAnswer =
@@ -64,6 +68,12 @@ export default function Settings() {
       toggle: toggleHighContrast,
       on: localeList[locale]["Settings3"],
       off: localeList[locale]["Settings4"],
+    },    {
+      name: "hideAutocomplete",
+      setToggle: setToggleHideAutocomplete,
+      toggle: toggleHideAutocomplete,
+      on: "Autocomplete country name on",
+      off: "Autocomplete country name off",
     },
   ];
 

@@ -4,11 +4,13 @@ import { answerCountry, answerName } from "../util/answer";
 import { Message } from "./Message";
 import { polygonDistance } from "../util/distance";
 // import alternateNames from "../data/alternate_names.json";
+import { ThemeContext } from "../context/ThemeContext";
 import { LocaleContext } from "../i18n/LocaleContext";
 import localeList from "../i18n/messages";
 import { FormattedMessage } from "react-intl";
 import { langNameMap } from "../i18n/locales";
 import { AltNames } from "../lib/alternateNames";
+
 const countryData: Country[] = require("../data/country_data.json").features;
 const alternateNames: AltNames = require("../data/alternate_names.json");
 const minGuessLength = 2;
@@ -31,6 +33,7 @@ export default function Guesser({
 }: Props) {
   const [guessName, setGuessName] = useState("");
   const [error, setError] = useState("");
+  const { hideAutocomplete } = useContext(ThemeContext).theme;
   const { locale } = useContext(LocaleContext);
 
   const langName = langNameMap[locale];
@@ -41,14 +44,17 @@ export default function Guesser({
   }, [ref]);
 
   function getSuggestions(value: string) {
+    if (hideAutocomplete) {
+      return [];
+    }
     const inputValue = value.trim();
     const inputLength = inputValue.length;
 
     if (inputLength >= minGuessLength) {
-      const countryNames = countryData.map(country => country.properties.NAME)
+      const countryNames = countryData.map(country => country.properties.NAME);
       const suggestions = countryData.filter(country => {
-        const countryName = country.properties.NAME.toLowerCase()
-        return countryName.slice(0, inputLength) === inputValue.toLowerCase()
+        const countryName = country.properties.NAME.toLowerCase();
+        return countryName.slice(0, inputLength) === inputValue.toLowerCase();
       });
       if (suggestions.length === 1 && countryNames.includes(inputValue)) {
         return [];
@@ -186,9 +192,9 @@ export default function Guesser({
               <div
               className="text-left"
               key={country.properties.ADMIN}
-              onClick={() => {setGuessName(country.properties.NAME)}}
+              onClick={() => setGuessName(country.properties.NAME)}
               >{country.properties.NAME}</div>
-            )
+            );
           })}
         </div>
       </form>
