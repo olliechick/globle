@@ -105,11 +105,16 @@ export default function Statistics({ setShowStats }: Props) {
   const unambiguousDate = formatDate(event);
   const date = unambiguousDate === "Invalid Date" ? today : unambiguousDate;
   async function copyToClipboard() {
-    const shareString = `🌎 ${date} 🌍
-🔥 ${currentStreak} | ${localeList[locale]["Stats7"]}: ${showAvgGuesses}
-${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
+    let shareString = `Globle ${date}
+${localeList[locale]["Stats2"]}: ${todaysGuesses}
+${localeList[locale]["Stats4"]}: ${currentStreak}
+${localeList[locale]["Stats6"]}: ${showAvgGuesses}`;
 
-#globle`;
+    if (emojiGuesses) {
+      shareString = `Globle ${date}
+🔥${currentStreak} | ${localeList[locale]["Stats6"]}: ${showAvgGuesses}
+${lastWin === today ? emojiGuesses : "--"}`;
+    }
 
     try {
       if ("canShare" in navigator && isMobile && !isFirefox) {
@@ -195,7 +200,7 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
         <button
           className="bg-blue-700 hover:bg-blue-900 dark:bg-purple-800 dark:hover:bg-purple-900
           text-white dark:text-gray-300 rounded-md px-8 py-2 block text-base font-medium
-          focus:outline-none focus:ring-2 focus:ring-blue-300 
+          focus:outline-none focus:ring-2 focus:ring-blue-300
           justify-around sm:flex-grow sm:mx-10"
           onClick={copyToClipboard}
         >
@@ -248,8 +253,8 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
       </div>
       <Fade
         show={showResetMsg}
-        background="border-4 border-sky-300 dark:border-slate-700 bg-sky-100 
-        dark:bg-slate-900 drop-shadow-xl 
+        background="border-4 border-sky-300 dark:border-slate-700 bg-sky-100
+        dark:bg-slate-900 drop-shadow-xl
         absolute z-10 top-24 w-fit inset-x-0 mx-auto py-4 px-4 rounded-md space-y-2"
       >
         <p className="text-gray-900 dark:text-gray-300">{msg}</p>
@@ -274,8 +279,8 @@ ${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
       </Fade>
       <Fade
         show={showCopyMsg}
-        background="border-4 border-sky-300 dark:border-slate-700 
-        bg-sky-100 dark:bg-slate-900 drop-shadow-xl 
+        background="border-4 border-sky-300 dark:border-slate-700
+        bg-sky-100 dark:bg-slate-900 drop-shadow-xl
       absolute z-10 top-24 w-fit inset-x-0 mx-auto py-4 px-4 rounded-md space-y-2"
       >
         <p className="text-gray-900 dark:text-gray-300">{msg}</p>
