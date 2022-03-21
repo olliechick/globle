@@ -109,11 +109,16 @@ export default function Statistics({ setShowStats }: Props) {
   const date = unambiguousDate === "Invalid Date" ? today : unambiguousDate;
 
   async function copyToClipboard() {
-    const shareString = `🌎 ${date} 🌍
-🔥 ${currentStreak} | ${localeList[locale]["Stats7"]}: ${showAvgGuesses}
-${lastWin === today ? emojiGuesses : "--"} = ${todaysGuesses}
+    let shareString = `Globle ${date}
+${localeList[locale]["Stats2"]}: ${todaysGuesses}
+${localeList[locale]["Stats4"]}: ${currentStreak}
+${localeList[locale]["Stats6"]}: ${showAvgGuesses}`;
 
-#globle`;
+    if (emojiGuesses) {
+      shareString = `Globle ${date}
+🔥${currentStreak} | ${localeList[locale]["Stats6"]}: ${showAvgGuesses}
+${lastWin === today ? emojiGuesses : "--"}`;
+    }
 
     try {
       if ("canShare" in navigator && isMobile && !isFirefox) {
