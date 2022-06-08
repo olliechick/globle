@@ -50,7 +50,7 @@ export default function Game({ reSpin, setReSpin, setShowStats }: Props) {
     const practiceAnswer =
       countryData[Math.floor(Math.random() * countryData.length)];
     localStorage.setItem("practice", JSON.stringify(practiceAnswer));
-    navigate("/game?practice_mode=true");
+    navigate("/globle-2/game?practice_mode=true");
     setGuesses([]);
     setWin(false);
   }
@@ -173,7 +173,7 @@ export default function Game({ reSpin, setReSpin, setShowStats }: Props) {
         focus:ring-4 focus:ring-blue-300 rounded-lg text-sm
         px-4 py-2.5 text-center items-center
         dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/globle-2/")}
               >
                 {" "}
                 <FormattedMessage id="PracticeExit" />
