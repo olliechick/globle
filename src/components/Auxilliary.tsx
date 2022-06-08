@@ -38,7 +38,7 @@ export default function Auxilliary({ screen }: Props) {
   }, [globeRef]);
 
   function goToGame() {
-    navigate("/game");
+    navigate("/globle-2/game");
   }
 
   const renderLoader = () => (
@@ -61,7 +61,7 @@ export default function Auxilliary({ screen }: Props) {
         tabIndex={0}
         onKeyPress={keyPressToggle}
       >
-        <Link to="/game">
+        <Link to="/globle-2/game">
           <div
             className="mx-auto cursor-pointer"
             style={extraStyle}
@@ -101,7 +101,7 @@ export default function Auxilliary({ screen }: Props) {
           <FormattedMessage id="Aux2" />{" "}
           <button
             className="underline cursor-pointer inline"
-            onClick={() => navigate("/info")}
+            onClick={() => navigate("/globle-2/info")}
           >
             <FormattedMessage id="Aux3" />
           </button>
