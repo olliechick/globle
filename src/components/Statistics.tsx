@@ -227,19 +227,7 @@ ${lastWin === today ? emojiGuesses : "--"}`;
             target="_blank"
           >
             <img
-                src=".images/plurality.png"
-                alt="Plurality logo"
-                width={25}
-                height={25}
-            />
-            <img
                 src="./images/plurality.png"
-                alt="Plurality logo"
-                width={25}
-                height={25}
-            />
-            <img
-                src="globle-2/images/plurality.png"
                 alt="Plurality logo"
                 width={25}
                 height={25}
