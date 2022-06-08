@@ -51,8 +51,8 @@ export function turnGlobe(
 export const globeImg = (nightMode: boolean) => {
   const time = nightMode ? "night" : "day";
   if (isSafari && browserVersion < "14") {
-    return `images/safari-14-earth-${time}.jpg`;
+    return `${nightMode ? 'globle-2/' : ''}images/safari-14-earth-${time}.jpg`;
   } else {
-    return `images/earth-${time}.webp`;
+    return `${nightMode ? 'globle-2/' : ''}images/earth-${time}.webp`;
   }
 };
