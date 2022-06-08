@@ -41,9 +41,9 @@ function App() {
         <Statistics setShowStats={setShowStats} />
       </Fade>
       <Routes>
-        <Route path="/" element={<Help />} />
+        <Route path="/globle/" element={<Help />} />
         <Route
-          path="/game"
+          path="/globle/game"
           element={
             <Game
               reSpin={reSpin}
@@ -52,8 +52,8 @@ function App() {
             />
           }
         />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/info" element={<Info />} />
+        <Route path="/globle/settings" element={<Settings />} />
+        <Route path="/globle/info" element={<Info />} />
       </Routes>
     </div>
   );

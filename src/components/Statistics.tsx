@@ -227,7 +227,7 @@ ${lastWin === today ? emojiGuesses : "--"}`;
             target="_blank"
           >
             <img
-              src="images/plurality.png"
+              src="globle/images/plurality.png"
               alt="Plurality logo"
               width={25}
               height={25}
