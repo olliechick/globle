@@ -18,9 +18,9 @@ export default function Header({ setReSpin, setShowStats }: Props) {
   function reRenderGlobe() {
     setReSpin(true);
     if (practiceMode) {
-      return navigate("/globle-2/");
+      return navigate("/globle/");
     }
-    navigate("/globle-2/game");
+    navigate("/globle/game");
   }
 
   const svgColour = theme.nightMode ? "rgb(209 213 219)" : "black";
@@ -29,7 +29,7 @@ export default function Header({ setReSpin, setShowStats }: Props) {
     <header className="mt-8 h-10 relative dark:text-gray-300 z-10">
       <div className="relative h-full">
         <div className="space-x-1 flex absolute left-0 bottom-1">
-          <button onClick={() => navigate("/globle-2/")} aria-label="Help">
+          <button onClick={() => navigate("/globle/")} aria-label="Help">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -62,7 +62,7 @@ export default function Header({ setReSpin, setShowStats }: Props) {
               <path fill={svgColour} d={getPath("stats")}></path>
             </svg>
           </button>
-          <button onClick={() => navigate("globle-2/settings")} aria-label="Settings">
+          <button onClick={() => navigate("globle/settings")} aria-label="Settings">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
