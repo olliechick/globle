@@ -19,7 +19,7 @@ export default function Settings() {
   );
   const { locale } = useContext(LocaleContext);
   const [toggleHideAutocomplete, setToggleHideAutocomplete] = useState(
-      !themeContext.theme.hideAutocomplete
+      themeContext.theme.hideAutocomplete
   );
 
   const [toggleScope, setToggleScope] = useState(true);
@@ -34,7 +34,7 @@ export default function Settings() {
         nightMode: !toggleTheme,
         highContrast: !toggleHighContrast,
         prideMode: !togglePride,
-        hideAutocomplete: !toggleHideAutocomplete
+        hideAutocomplete: toggleHideAutocomplete
       });
     }
   }, [toggleTheme, toggleHighContrast, setTheme, togglePride, toggleHideAutocomplete]);

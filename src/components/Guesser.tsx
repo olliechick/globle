@@ -15,184 +15,191 @@ const minGuessLength = 2;
 const suggestionLimit = 3;
 
 type Props = {
-  guesses: Country[];
-  setGuesses: React.Dispatch<React.SetStateAction<Country[]>>;
-  win: boolean;
-  setWin: React.Dispatch<React.SetStateAction<boolean>>;
-  practiceMode: boolean;
+    guesses: Country[];
+    setGuesses: React.Dispatch<React.SetStateAction<Country[]>>;
+    win: boolean;
+    setWin: React.Dispatch<React.SetStateAction<boolean>>;
+    practiceMode: boolean;
 };
 
 export default function Guesser({
-  guesses,
-  setGuesses,
-  win,
-  setWin,
-  practiceMode,
-}: Props) {
-  const [guessName, setGuessName] = useState("");
-  const [error, setError] = useState("");
-  const { hideAutocomplete } = useContext(ThemeContext).theme;
-  const { locale } = useContext(LocaleContext);
+                                    guesses,
+                                    setGuesses,
+                                    win,
+                                    setWin,
+                                    practiceMode,
+                                }: Props) {
+    const [guessName, setGuessName] = useState("");
+    const [error, setError] = useState("");
+    const { hideAutocomplete } = useContext(ThemeContext).theme;
+    const { locale } = useContext(LocaleContext);
 
-  const langName = langNameMap[locale];
+    const langName = langNameMap[locale];
 
-  function getSuggestions(value: string) {
-    if (hideAutocomplete){
-      return [];
-    }
-    const inputValue = value.trim();
-    const inputLength = inputValue.length;
-    
-    if (inputLength >= minGuessLength) {
-      const countryNames = countryData.map(country => country.properties.NAME)
-      const suggestions = countryData.filter(country => {
-        const countryName = country.properties.NAME.toLowerCase()
-        return countryName.slice(0, inputLength) === inputValue.toLowerCase()
-      });
-      console.log(inputValue, countryNames)
-      if (suggestions.length === 1 && countryNames.includes(inputValue)) {
+    function getSuggestions(value: string) {
+        console.log("here1", value);
+        if (hideAutocomplete) {
+            console.log("here2");
+            return [];
+        }
+        const inputValue = value.trim();
+        const inputLength = inputValue.length;
+
+        if (inputLength >= minGuessLength) {
+            const countryNames = countryData.map(country => country.properties.NAME);
+            const suggestions = countryData.filter(country => {
+                const countryName = country.properties.NAME.toLowerCase();
+                return countryName.slice(0, inputLength) === inputValue.toLowerCase();
+            });
+            console.log(inputValue, countryNames);
+            if (suggestions.length === 1 && countryNames.includes(inputValue)) {
+                console.log("here3");
+                return [];
+            } else {
+                console.log("here4");
+                return suggestions.slice(0, suggestionLimit);
+            }
+        }
+        console.log("here5");
         return [];
-      } else {
-        return suggestions.slice(0, suggestionLimit);
-      }
     }
-    return [];
-  }
 
-  function findCountry(countryName: string, list: Country[]) {
-    return list.find((country) => {
-      const { NAME, NAME_LONG, ABBREV, ADMIN, BRK_NAME, NAME_SORT } =
-        country.properties;
+    function findCountry(countryName: string, list: Country[]) {
+        return list.find((country) => {
+            const { NAME, NAME_LONG, ABBREV, ADMIN, BRK_NAME, NAME_SORT } =
+                country.properties;
 
-      return (
-        NAME.toLowerCase() === countryName ||
-        NAME_LONG.toLowerCase() === countryName ||
-        ADMIN.toLowerCase() === countryName ||
-        ABBREV.toLowerCase() === countryName ||
-        ABBREV.replace(/\./g, "").toLowerCase() === countryName ||
-        NAME.replace(/-/g, " ").toLowerCase() === countryName ||
-        BRK_NAME.toLowerCase() === countryName ||
-        NAME_SORT.toLowerCase() === countryName ||
-        country.properties[langName].toLowerCase() === countryName
-      );
-    });
-  }
-
-  // Check territories function
-  function runChecks() {
-    const trimmedName = guessName
-      .trim()
-      .toLowerCase()
-      .replace(/&/g, "and")
-      .replace(/^st\s/g, "st. ");
-
-    const oldNamePair = alternateNames[locale].find((pair) => {
-      return pair.alternative === trimmedName;
-    });
-    const userGuess = oldNamePair ? oldNamePair.real : trimmedName;
-    const alreadyGuessed = findCountry(userGuess, guesses);
-    if (alreadyGuessed) {
-      setError(localeList[locale]["Game6"]);
-      return;
+            return (
+                NAME.toLowerCase() === countryName ||
+                NAME_LONG.toLowerCase() === countryName ||
+                ADMIN.toLowerCase() === countryName ||
+                ABBREV.toLowerCase() === countryName ||
+                ABBREV.replace(/\./g, "").toLowerCase() === countryName ||
+                NAME.replace(/-/g, " ").toLowerCase() === countryName ||
+                BRK_NAME.toLowerCase() === countryName ||
+                NAME_SORT.toLowerCase() === countryName ||
+                country.properties[langName].toLowerCase() === countryName
+            );
+        });
     }
-    const guessCountry = findCountry(userGuess, countryData);
-    if (!guessCountry) {
-      setError(localeList[locale]["Game5"]);
-      return;
-    }
-    if (practiceMode) {
-      const answerCountry = JSON.parse(
-        localStorage.getItem("practice") as string
-      ) as Country;
-      const answerName = answerCountry.properties.NAME;
-      if (guessCountry.properties.NAME === answerName) {
-        setWin(true);
-      }
-    } else if (guessCountry.properties.NAME === answerName) {
-      setWin(true);
-    }
-    return guessCountry;
-  }
 
-  function addGuess(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError("");
-    let guessCountry = runChecks();
-    if (practiceMode) {
-      const answerCountry = JSON.parse(
-        localStorage.getItem("practice") as string
-      );
-      if (guessCountry && answerCountry) {
-        guessCountry["proximity"] = polygonDistance(
-          guessCountry,
-          answerCountry
-        );
-        setGuesses([...guesses, guessCountry]);
-        setGuessName("");
-        return;
-      }
-    }
-    if (guessCountry && answerCountry) {
-      guessCountry["proximity"] = polygonDistance(guessCountry, answerCountry);
-      setGuesses([...guesses, guessCountry]);
-      setGuessName("");
-    }
-  }
+    // Check territories function
+    function runChecks() {
+        const trimmedName = guessName
+            .trim()
+            .toLowerCase()
+            .replace(/&/g, "and")
+            .replace(/^st\s/g, "st. ");
 
-  return (
-    <div className="mt-10 mb-6 block mx-auto text-center">
-      <form
-        onSubmit={addGuess}
-        className="w-80 flex space-x-4 mx-auto my-2 justify-center flex-wrap"
-      >
-        <input
-          className="shadow px-2 py-1 md:py-0
+        const oldNamePair = alternateNames[locale].find((pair) => {
+            return pair.alternative === trimmedName;
+        });
+        const userGuess = oldNamePair ? oldNamePair.real : trimmedName;
+        const alreadyGuessed = findCountry(userGuess, guesses);
+        if (alreadyGuessed) {
+            setError(localeList[locale]["Game6"]);
+            return;
+        }
+        const guessCountry = findCountry(userGuess, countryData);
+        if (!guessCountry) {
+            setError(localeList[locale]["Game5"]);
+            return;
+        }
+        if (practiceMode) {
+            const answerCountry = JSON.parse(
+                localStorage.getItem("practice") as string
+            ) as Country;
+            const answerName = answerCountry.properties.NAME;
+            if (guessCountry.properties.NAME === answerName) {
+                setWin(true);
+            }
+        } else if (guessCountry.properties.NAME === answerName) {
+            setWin(true);
+        }
+        return guessCountry;
+    }
+
+    function addGuess(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setError("");
+        let guessCountry = runChecks();
+        if (practiceMode) {
+            const answerCountry = JSON.parse(
+                localStorage.getItem("practice") as string
+            );
+            if (guessCountry && answerCountry) {
+                guessCountry["proximity"] = polygonDistance(
+                    guessCountry,
+                    answerCountry
+                );
+                setGuesses([...guesses, guessCountry]);
+                setGuessName("");
+                return;
+            }
+        }
+        if (guessCountry && answerCountry) {
+            guessCountry["proximity"] = polygonDistance(guessCountry, answerCountry);
+            setGuesses([...guesses, guessCountry]);
+            setGuessName("");
+        }
+    }
+
+    return (
+        <div className="mt-10 mb-6 block mx-auto text-center">
+            <form
+                onSubmit={addGuess}
+                className="w-80 flex space-x-4 mx-auto my-2 justify-center flex-wrap"
+            >
+                <input
+                    className="shadow px-2 py-1 md:py-0
           text-gray-700 dark:bg-slate-300 focus:outline-none 
           focus:shadow-outline disabled:bg-slate-400
           border rounded disabled:border-slate-400
           w-full flex-1"
-          type="text"
-          name="guesser"
-          id="guesser"
-          value={guessName}
-          onChange={(e) => setGuessName(e.currentTarget.value)}
-          disabled={win}
-          placeholder={guesses.length === 0 ? localeList[locale]["Game1"] : ""}
-          autoComplete="new-password"
-        />
+                    type="text"
+                    name="guesser"
+                    id="guesser"
+                    value={guessName}
+                    onChange={(e) => setGuessName(e.currentTarget.value)}
+                    disabled={win}
+                    placeholder={guesses.length === 0 ? localeList[locale]["Game1"] : ""}
+                    autoComplete="new-password"
+                />
 
-        <button
-          className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white
+                <button
+                    className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white
           font-bold py-1 md:py-2 px-4 rounded focus:shadow-outline "
-          type="submit"
-          disabled={win}
-        >
-          <FormattedMessage id="Game2" />
-        </button>
+                    type="submit"
+                    disabled={win}
+                >
+                    <FormattedMessage id="Game2"/>
+                </button>
 
-        <div className="shadow px-2 py-0
+                <div className="shadow px-2 py-0
           text-gray-700 dark:bg-slate-300 focus:outline-none 
           focus:shadow-outline disabled:bg-slate-400
           rounded disabled:border-slate-400
           w-full bg-white !mx-0"
-        >
-          {getSuggestions(guessName).map(country => {
-            return (
-              <div
-              className="text-left"
-              key={country.properties.ADMIN}
-              onClick={() => {setGuessName(country.properties.NAME)}}
-              >{country.properties.NAME}</div>
-            )
-          })}
+                >
+                    {getSuggestions(guessName).map(country => {
+                        return (
+                            <div
+                                className="text-left"
+                                key={country.properties.ADMIN}
+                                onClick={() => {
+                                    setGuessName(country.properties.NAME);
+                                }}
+                            >{country.properties.NAME}</div>
+                        );
+                    })}
+                </div>
+            </form>
+            <Message
+                win={win}
+                error={error}
+                guesses={guesses.length}
+                practiceMode={practiceMode}
+            />
         </div>
-      </form>
-      <Message
-        win={win}
-        error={error}
-        guesses={guesses.length}
-        practiceMode={practiceMode}
-      />
-    </div>
-  );
+    );
 }
