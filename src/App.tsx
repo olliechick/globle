@@ -8,8 +8,6 @@ import Settings from "./pages/Settings";
 import Statistics from "./components/Statistics";
 import { ThemeContext } from "./context/ThemeContext";
 import Fade from "./transitions/Fade";
-import { MobileOnlyView, TabletView, BrowserView } from "react-device-detect";
-import SnackAdUnit from "./components/SnackAdUnit";
 
 function App() {
   // State
@@ -53,19 +51,6 @@ function App() {
         <Route path="/globle/settings" element={<Settings />} />
         <Route path="/globle/info" element={<Info />} />
       </Routes>
-      {!practiceMode && (
-        <div className="sm:py-4">
-          <MobileOnlyView>
-            <SnackAdUnit unitName="snack_mex1" siteId="2902" />
-          </MobileOnlyView>
-          <BrowserView>
-            <SnackAdUnit unitName="snack_dex1" siteId="2902" />
-          </BrowserView>
-          <TabletView>
-            <SnackAdUnit unitName="snack_dex1" siteId="2902" />
-          </TabletView>
-        </div>
-      )}
     </div>
   );
 }
