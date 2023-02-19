@@ -53,7 +53,7 @@ export const English: Messages = {
   Stats4: "Current streak",
   Stats5: "Max streak",
   Stats6: "Average guesses",
-  Stats7: "Avg. Guesses",
+  Stats7: "Average guesses",
   Stats8: "Reset",
   Stats9: "Share",
   Stats10: "Are you sure you want to reset your score?",

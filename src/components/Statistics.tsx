@@ -46,7 +46,7 @@ export default function Statistics({ setShowStats }: Props) {
   const todaysGuesses =
     lastWin === today ? usedGuesses[usedGuesses.length - 1] : "--";
 
-  const showLastWin = lastWin >= "2022-01-01" ? lastWin : "--";
+  const showLastWin = lastWin >= "2022-01-01" ? formatDate(new Date(lastWin)) : "--";
 
   const avgShorthand = isMobile
     ? localeList[locale]["Stats7"]
